@@ -1,23 +1,34 @@
-class Solution {
-public:
-    vector<vector<int>> merge(vector<vector<int>>& intervals) {
-        // Sort intervals by their start time
-        sort(intervals.begin(), intervals.end());
+class Solution { 
+public: 
+    vector<vector<int>> merge(vector<vector<int>>& intervals) { 
+        int n = intervals.size(); 
+ 
+        sort(intervals.begin(), intervals.end()); 
+ 
+        vector<vector<int>> ans; 
+ 
+        for (int i = 0; i < n; i++) { 
+            int start = intervals[i][0]; 
+            int end = intervals[i][1]; 
+ 
+            int j = i + 1;
+            
+            for (; j < n; j++) { 
+                if (intervals[j][0] <= end) { 
+                    end = max(end, intervals[j][1]); 
+                } 
+                else { 
+                    break; 
+                } 
+            } 
+ 
+            ans.push_back({start, end}); 
 
-        vector<vector<int>> result;
-
-        for (auto& interval : intervals) {
-            // If result is empty OR current interval doesn't overlap with last one
-            if (result.empty() || result.back()[1] < interval[0]) {
-                result.push_back(interval);
-            } else {
-                // Overlap exists — extend the end of the last interval if needed
-                result.back()[1] = max(result.back()[1], interval[1]);
-            }
-        }
-
-        return result;
-    }
+            i = j - 1;
+        } 
+ 
+        return ans; 
+    } 
 };
 
 // Synced seamlessly with LeetHub Pro
